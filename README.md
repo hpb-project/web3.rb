@@ -12,7 +12,10 @@ This Ruby Gem is used to connect and communicate with a High Performance Blockch
 To install this gem onto your local machine, run:
 # bundle exec rake install
 
-To test the installation, run:
+To run tests:
+# rake test
+
+To view an example of what you can do with the installation, run:
 # ruby example.rb
 
 You can also run the following command for an interactive prompt that will allow you to experiment:

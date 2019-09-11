@@ -5,7 +5,7 @@ This Ruby Gem is used to connect and communicate with a High Performance Blockch
 
 ## Installation
 ```bash
-# git clone https://github.com/Nicemanss/web3.rb
+# git clone https://github.com/hpb-project/web3.rb
 # cd web3.rb
 # bin/setup
 
@@ -22,7 +22,7 @@ You can also run the following command for an interactive prompt that will allow
 
 ## Usage
 
-https://github.com/Nicemanss/web3.rb/blob/master/example.rb is a basic example that could get you started.
+https://github.com/hpb-project/web3.rb/blob/master/example.rb is a basic example that could get you started.
 
 ### Connect
 

@@ -135,7 +135,7 @@ class Web3::HpbTest < Minitest::Test
     refute_nil test
   end
 
-#  def test_22
+#  def test_sendTransaction
 #    test = @web3.hpb.sendTransaction([{"from": "0x....", "to": "0x...", "gas": "0x12", "gasPrice": "0x2540BE400", "value": "0x46C7CFE00"}])
 #    refute_nil test
 #    assert test.is_a? String

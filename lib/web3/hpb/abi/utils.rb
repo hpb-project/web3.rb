@@ -109,7 +109,7 @@ module Web3::Hpb::Abi
     end
 
     def zunpad(x)
-      x.sub /\A\x00+/, ''
+      x.sub (/\A\x00+/), ''
     end
 
     def zpad_int(n, l=32)

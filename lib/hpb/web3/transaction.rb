@@ -1,22 +1,21 @@
-module Web3
-  module Hpb
-
+module HPB
+  module Web3
     class Transaction
 
-      include Web3::Hpb::Utility
+      include HPB::Web3::Utility
 
       attr_reader :raw_data
 
-      def initialize transaction_data
+      def initialize(transaction_data)
         @raw_data = transaction_data
         transaction_data.each do |k, v|
           self.instance_variable_set("@#{k}", v)
-          self.class.send(:define_method, k, proc {self.instance_variable_get("@#{k}")})
+          self.class.send(:define_method, k, proc { self.instance_variable_get("@#{k}") })
         end
       end
 
       def method_hash
-        if input && input.length>=10
+        if input && input.length >= 10
           input[2...10]
         else
           nil
@@ -28,7 +27,7 @@ module Web3
       def call_input_data
         if raw_data['creates'] && input
           fetch_constructor_data input
-        elsif input && input.length>10
+        elsif input && input.length > 10
           input[10..input.length]
         else
           []
@@ -60,9 +59,10 @@ module Web3
       private
 
       CONSTRUCTOR_SEQ = /a165627a7a72305820\w{64}0029(\w*)$/
+
       def fetch_constructor_data input
-        data = input[CONSTRUCTOR_SEQ,1]
-        while data && (d = data[CONSTRUCTOR_SEQ,1])
+        data = input[CONSTRUCTOR_SEQ, 1]
+        while data && (d = data[CONSTRUCTOR_SEQ, 1])
           data = d
         end
         data

@@ -1,6 +1,4 @@
-# -*- encoding : ascii-8bit -*-
-
-module Web3::Hpb::Abi
+module HPB::Web3::Abi
 
   class DeprecatedError < StandardError; end
   class ChecksumError < StandardError; end

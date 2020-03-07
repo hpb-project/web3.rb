@@ -1,20 +1,15 @@
-# -*- encoding : ascii-8bit -*-
-
 require 'digest'
 require 'digest/sha3'
 require 'openssl'
 require 'rlp'
 
-module Web3::Hpb::Abi
+module HPB::Web3::Abi
   module Utils
 
     extend self
 
     include Constant
 
-    ##
-    # Not the keccak in sha3, although it's underlying lib named SHA3
-    #
     def keccak256(x)
       Digest::SHA3.new(256).digest(x)
     end
@@ -56,26 +51,26 @@ module Web3::Hpb::Abi
     end
 
     def to_signed(i)
-      i > Constant::INT_MAX ? (i-Constant::TT256) : i
+      i > Constant::INT_MAX ? (i - Constant::TT256) : i
     end
 
     def base58_check_to_bytes(s)
       leadingzbytes = s.match(/\A1*/)[0]
-      data = Constant::BYTE_ZERO * leadingzbytes.size + BaseConvert.convert(s, 58, 256)
+      data          = Constant::BYTE_ZERO * leadingzbytes.size + BaseConvert.convert(s, 58, 256)
 
-      raise ChecksumError, "double sha256 checksum doesn't match" unless double_sha256(data[0...-4])[0,4] == data[-4..-1]
+      raise ChecksumError, "double sha256 checksum doesn't match" unless double_sha256(data[0...-4])[0, 4] == data[-4..-1]
       data[1...-4]
     end
 
-    def bytes_to_base58_check(bytes, magicbyte=0)
-      bs = "#{magicbyte.chr}#{bytes}"
+    def bytes_to_base58_check(bytes, magicbyte = 0)
+      bs            = "#{magicbyte.chr}#{bytes}"
       leadingzbytes = bs.match(/\A#{Constant::BYTE_ZERO}*/)[0]
-      checksum = double_sha256(bs)[0,4]
-      '1'*leadingzbytes.size + BaseConvert.convert("#{bs}#{checksum}", 256, 58)
+      checksum      = double_sha256(bs)[0, 4]
+      '1' * leadingzbytes.size + BaseConvert.convert("#{bs}#{checksum}", 256, 58)
     end
 
     def ceil32(x)
-      x % 32 == 0 ? x : (x + 32 - x%32)
+      x % 32 == 0 ? x : (x + 32 - x % 32)
     end
 
     def encode_hex(b)
@@ -112,11 +107,11 @@ module Web3::Hpb::Abi
       x.sub (/\A\x00+/), ''
     end
 
-    def zpad_int(n, l=32)
+    def zpad_int(n, l = 32)
       zpad encode_int(n), l
     end
 
-    def zpad_hex(s, l=32)
+    def zpad_hex(s, l = 32)
       zpad decode_hex(s), l
     end
 
@@ -136,7 +131,7 @@ module Web3::Hpb::Abi
 
     def bytearray_to_int(arr)
       o = 0
-      arr.each {|x| o = (o << 8) + x }
+      arr.each { |x| o = (o << 8) + x }
       o
     end
 
@@ -196,7 +191,7 @@ module Web3::Hpb::Abi
     def parse_int_or_hex(s)
       if s.is_a?(Numeric)
         s
-      elsif s[0,2] == '0x'
+      elsif s[0, 2] == '0x'
         big_endian_to_int decode_hex(normalize_hex_without_prefix(s))
       else
         s.to_i
@@ -204,18 +199,18 @@ module Web3::Hpb::Abi
     end
 
     def normalize_hex_without_prefix(s)
-      if s[0,2] == '0x'
+      if s[0, 2] == '0x'
         (s.size % 2 == 1 ? '0' : '') + s[2..-1]
       else
         s
       end
     end
 
-    def function_signature method_name, arg_types
+    def function_signature(method_name, arg_types)
       "#{method_name}(#{arg_types.join(',')})"
     end
 
-    def signature_hash signature, length=64
+    def signature_hash(signature, length = 64)
       encode_hex(keccak256(signature))[0...length]
     end
 

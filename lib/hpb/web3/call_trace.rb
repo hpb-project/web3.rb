@@ -1,20 +1,17 @@
-module Web3
-  module Hpb
-
+module HPB
+  module Web3
     class CallTrace
 
-      include Web3::Hpb::Utility
+      include HPB::Web3::Utility
 
       attr_reader :raw_data
 
-      def initialize trace_data
+      def initialize(trace_data)
         @raw_data = trace_data
-
         trace_data.each do |k, v|
           self.instance_variable_set("@#{k}", v)
-          self.class.send(:define_method, k, proc {self.instance_variable_get("@#{k}")})
+          self.class.send(:define_method, k, proc { self.instance_variable_get("@#{k}") })
         end
-
       end
 
       def value_wei
@@ -46,7 +43,7 @@ module Web3
       end
 
       def method_hash
-        if input && input.length>=10
+        if input && input.length >= 10
           input[2...10]
         else
           nil
@@ -61,17 +58,16 @@ module Web3
       # look http://solidity.readthedocs.io/en/latest/metadata.html for details
       def call_input_data
         if creates && input
-          input[/a165627a7a72305820\w{64}0029(\w*)/,1]
-        elsif input && input.length>10
+          input[/a165627a7a72305820\w{64}0029(\w*)/, 1]
+        elsif input && input.length > 10
           input[10..input.length]
         else
           []
         end
       end
 
-
       def suicide?
-        type=='suicide'
+        type == 'suicide'
       end
 
       def balance_hpb

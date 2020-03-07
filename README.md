@@ -2,7 +2,6 @@
 
 This Ruby Gem is used to connect and communicate with a High Performance Blockchain node using the RPC interface.
 
-
 ## Installation
 ```bash
 # git clone https://github.com/hpb-project/web3.rb
@@ -13,34 +12,29 @@ To install this gem onto your local machine, run:
 # bundle exec rake install
 
 To run tests:
-# rake test
-
-To view an example of what you can do with the installation, run:
-# ruby example.rb
+# rspec
 
 You can also run the following command for an interactive prompt that will allow you to experiment:
 # bin/console
 ```
 
 
-## Usage
-
-https://github.com/hpb-project/web3.rb/blob/master/example.rb is a basic example that could get you started.
-
 ### Connect
 
 Connecting to local node ( or by SSH Tunnel )
 
 ```ruby
-web3 = Web3::Hpb::Rpc.new
+client = HPB::Web3::Client.new
 ```
 
 If you need to connect to remote host, you can specify host, port and HTTP connection options:
 
 ```ruby
-web3 = Web3::Hpb::Rpc.new host: 'node.myhpbwallet.com', 
-                          port: 443,  
-                          connect_options: { use_ssl: true, open_timeout: 20, read_timeout: 120 } 
+client = HPB::Web3::Client.new(
+      host: 'node.myhpbwallet.com', 
+      port: 80,  
+      connect_options: { use_ssl: false, open_timeout: 20, read_timeout: 120 }
+) 
 ```
 
 HTTP connection options are from  [Ruby HTTP](https://ruby-doc.org/stdlib-2.4.2/libdoc/net/http/rdoc/Net/HTTP.html)  plus additional optional property
@@ -50,14 +44,14 @@ HTTP connection options are from  [Ruby HTTP](https://ruby-doc.org/stdlib-2.4.2/
 ### Calling HPB interface
 
 ```
->> web3.hpb.blockNumber
+>> client.api.find_max_block_number
 4376369
 
->> web3.hpb.getBalance '0xa1960fa87733f1b9ffbfb95d9d692471aa691c9c'
+>> client.api.find_balance_by_address '0xa1960fa87733f1b9ffbfb95d9d692471aa691c9c'
 3916.6597314456685
 
->> block = web3.hpb.getBlockByNumber 12345
-#<Web3::Hpb::Block:0x.... @block_data={"author"=>"0x...", ...
+>> block = client.api.find_block_by_block_number 12345
+#<HPB::Web3::Block:0x.... @block_data={"author"=>"0x...", ...
 
 >> block.timestamp_time
 2017-10-17 12:51:36 +0300
@@ -78,13 +72,13 @@ HTTP connection options are from  [Ruby HTTP](https://ruby-doc.org/stdlib-2.4.2/
 
 ```
 # creation of contract object
-myContract = web3.hpb.contract(abi);
+my_contract = client.api.contract(abi);
 
 # initiate contract for an address
-myContractInstance = myContract.at('0xa1960fa87733f1b9ffbfb95d9d692471aa691c9c');
+my_contract_instance = my_contract.at('0xa1960fa87733f1b9ffbfb95d9d692471aa691c9c');
 
 # call constant function
-result = myContractInstance.balanceOf('0x...'); # any constant method works
+result = my_contract_instance.balanceOf('0x...'); # any constant method works
 puts result 
 ```
 

@@ -1,15 +1,10 @@
-# -*- encoding : ascii-8bit -*-
+require 'hpb/web3/abi/type'
+require 'hpb/web3/abi/constant'
+require 'hpb/web3/abi/exceptions'
+require 'hpb/web3/abi/utils'
 
-require 'web3/hpb/abi/type'
-require 'web3/hpb/abi/constant'
-require 'web3/hpb/abi/exceptions'
-require 'web3/hpb/abi/utils'
+module HPB::Web3::Abi
 
-module Web3::Hpb::Abi
-
-  ##
-  # Contract ABI encoding and decoding.
-  #
   module AbiCoder
 
     extend self
